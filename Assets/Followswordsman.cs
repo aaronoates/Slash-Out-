@@ -5,7 +5,7 @@ using UnityEngine;
 public class Followswordsman : MonoBehaviour
 {
     public GameObject swordsman;
-    private Vector3 offset = new Vector3(-30, 10, 5);
+    private Vector3 offset = new Vector3(20, 100, 45);
     
     // Start is called before the first frame update
     void Start()
