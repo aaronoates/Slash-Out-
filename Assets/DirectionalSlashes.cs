@@ -19,18 +19,17 @@ public class DirectionalSlashes : MonoBehaviour
     private bool shouldRotatedownRight = false;
    
         
-    public Transform centerObject;
+    public Transform centerObject; // the object that the sword will rotate around, in this case the player character.
     
-    public float rotationSpeed;
-    public UnityEngine.Vector3 defaultposition = new UnityEngine.Vector3(128f, 12.7f, -0.5f);
-    public UnityEngine.Quaternion defaultrotation = UnityEngine.Quaternion.Euler(0f, 12.251f, 0f);
+    public float rotationSpeed; // how fast the swing is.
+    public UnityEngine.Vector3 defaultposition = new UnityEngine.Vector3(128f, 12.7f, -0.5f); // the default position of the sword object.
+    public UnityEngine.Quaternion defaultrotation = UnityEngine.Quaternion.Euler(0f, 12.251f, 0f); // the default rotation of the sword object.
     
-    //public Vector3 defaultrotation = new Vector3(0f, 0f, 0f);
-    //private Vector3 neutralPosition = new Vector3(261.3f, 10.4f, 171.7037f);
+    
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = defaultposition;
+        transform.position = defaultposition; // moves the sword to the default position.
         
         
     }
@@ -38,13 +37,20 @@ public class DirectionalSlashes : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("a") && !shouldRotate) // ensures you can't spam an attack, you need to wait until the swing animation finishes.
+        if (Input.GetKeyDown("a") && !shouldRotate) // ensures you can't spam an attack, you need to wait until the swing animation finishes for should rotate to be set to false.
         {
-            
-            transform.Rotate(0, 90, 0);
-      
+            shouldRotateright = false;
+            shouldRotateup = false;
+            shouldRotatedown = false;
+            shouldRotatedownLeft = false;
+            shouldRotatedownRight = false;
+            shouldRotateupLeft = false;
+            shouldRotateupRight = false;
 
-            shouldRotate = true;
+            transform.Rotate(0, 90, 0); //rotates the tip of the blade to be facing to the right-hand side of the character before the swing.
+            
+
+            shouldRotate = true; 
             shouldRotateleft = true;
             
            
@@ -53,15 +59,22 @@ public class DirectionalSlashes : MonoBehaviour
             
         }
 
-        if (shouldRotate && shouldRotateleft)
+        if (shouldRotate && shouldRotateleft) 
         {
             SwipeLeft();
         }
 
         if (Input.GetKeyDown("d") && !shouldRotate)
         {
-            transform.Translate(0f, 0f, 60f);
-            transform.Rotate(0, -90, 0);
+            shouldRotateleft = false;
+            shouldRotateup = false;
+            shouldRotatedown = false;
+            shouldRotatedownLeft = false;
+            shouldRotatedownRight = false;
+            shouldRotateupLeft = false;
+            shouldRotateupRight = false;
+            transform.Translate(0f, 0f, 60f); //sword needed to be moved so that the swing is in the desired range around the player.
+            transform.Rotate(0, -90, 0); // same as above, but facing left
             
 
             shouldRotate = true;
@@ -77,8 +90,15 @@ public class DirectionalSlashes : MonoBehaviour
 
         if (Input.GetKeyDown("w") && !shouldRotate)
         {
-            transform.Translate(-30f, 0f, 40f);
-            transform.Rotate(0, 0, -90);
+            shouldRotateright = false;
+            shouldRotateleft = false;
+            shouldRotatedown = false;
+            shouldRotatedownLeft = false;
+            shouldRotatedownRight = false;
+            shouldRotateupLeft = false;
+            shouldRotateupRight = false;
+            transform.Translate(-30f, 0f, 40f); // adjusting sword position before swing
+            transform.Rotate(0, 0, -90); //rotates the tip of the blade to be pointing downwards before an up-swing.
             shouldRotate = true;
             shouldRotateup = true;
         }
@@ -90,8 +110,16 @@ public class DirectionalSlashes : MonoBehaviour
 
         if (Input.GetKeyDown("s") && !shouldRotate)
         {
-            transform.Translate(30f, 60f, 50f);
-            transform.Rotate(0, 0, 90);
+            shouldRotateright = false;
+            shouldRotateleft = false;
+            shouldRotateup = false;
+            //shouldRotatedown = false;
+            shouldRotatedownLeft = false;
+            shouldRotatedownRight = false;
+            shouldRotateupLeft = false;
+            shouldRotateupRight = false;
+            transform.Translate(30f, 60f, 50f); // adjusting sword position before swing
+            transform.Rotate(0, 0, 90); // rotates the tip of the blade to be facing upwards before a down-swing.
             shouldRotate = true;
             shouldRotatedown = true;
         }
@@ -101,6 +129,21 @@ public class DirectionalSlashes : MonoBehaviour
             SwipeDown();
         }
 
+        if (Input.GetKeyDown("q") && !shouldRotate)
+        {
+            
+            transform.Rotate(0, 45, -90); // sets the tip of the blade to be pointing down and to the right before a swing.
+            shouldRotate = true;
+            shouldRotateupLeft = true;
+        }
+
+        if (shouldRotate && shouldRotateupLeft)
+        {
+            SwipeUpLeft();
+        }
+
+
+
 
     }
 
@@ -109,33 +152,35 @@ public class DirectionalSlashes : MonoBehaviour
 
         //Debug.Log("Center Object Position (SwipeRight): " + centerObject.position);
         
-        transform.RotateAround(centerObject.position, UnityEngine.Vector3.up, rotationSpeed * Time.deltaTime);
+        transform.RotateAround(centerObject.position, UnityEngine.Vector3.up, rotationSpeed * Time.deltaTime); //rotates the blade around the center point along the y-axis at the given rotation speed
         totalRotation += rotationSpeed * Time.deltaTime;
-       
-        if (totalRotation >= 180f)
+        Debug.Log(totalRotation);
+
+        if (totalRotation >= 180f) //sword has swung in a 180 degree arc
         {
-            shouldRotate = false;
+            shouldRotate = false; // sword can be swung again
             shouldRotateleft = false;
-            transform.position = defaultposition;
+            transform.position = defaultposition; // returns the sword to the default position and rotation.
             transform.rotation = defaultrotation;
-            Debug.Log("Object has rotated 180 degrees, stopping rotation.");
-            totalRotation = 0f;
+            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
+            totalRotation = 0f; // total rotation is reset for the next invocation.
 
         }
     }
 
     void SwipeLeft()
     {
-        Debug.Log("Center Object Position (SwipeLeft): " + centerObject.position);
+        //Debug.Log("Center Object Position (SwipeLeft): " + centerObject.position);
         transform.RotateAround(centerObject.position, UnityEngine.Vector3.down, rotationSpeed * Time.deltaTime);
         totalRotation += rotationSpeed * Time.deltaTime;
+        Debug.Log(totalRotation);
         if (totalRotation >= 180f)
         {
             shouldRotate = false;
             shouldRotateright = false;
             transform.position = defaultposition;
             transform.rotation = defaultrotation;
-            Debug.Log("Object has rotated 180 degrees, stopping rotation.");
+            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
             totalRotation = 0f;
 
         }
@@ -145,13 +190,14 @@ public class DirectionalSlashes : MonoBehaviour
     {
         transform.RotateAround(centerObject.position, UnityEngine.Vector3.forward, rotationSpeed * Time.deltaTime);
         totalRotation += rotationSpeed * Time.deltaTime;
+        Debug.Log(totalRotation);
         if (totalRotation >= 180f)
         {
             shouldRotate = false;
             shouldRotateup = false;
             transform.position = defaultposition;
             transform.rotation = defaultrotation;
-            Debug.Log("Object has rotated 180 degrees, stopping rotation.");
+            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
             totalRotation = 0f;
 
         }
@@ -161,10 +207,28 @@ public class DirectionalSlashes : MonoBehaviour
     {
         transform.RotateAround(centerObject.position, UnityEngine.Vector3.back, rotationSpeed * Time.deltaTime);
         totalRotation += rotationSpeed * Time.deltaTime;
+        Debug.Log(totalRotation);
         if (totalRotation >= 180f)
         {
             shouldRotate = false;
             shouldRotatedown = false;
+            transform.position = defaultposition;
+            transform.rotation = defaultrotation;
+            Debug.Log("Object has rotated 180 degrees, stopping rotation.");
+            totalRotation = 0f;
+
+        }
+    }
+
+    void SwipeUpLeft()
+    {
+        transform.RotateAround(centerObject.position, UnityEngine.Vector3.forward, rotationSpeed * Time.deltaTime);
+        transform.RotateAround(centerObject.position, UnityEngine.Vector3.down, rotationSpeed * Time.deltaTime);
+        totalRotation += rotationSpeed * Time.deltaTime;
+        if (totalRotation >= 180f)
+        {
+            shouldRotate = false;
+            shouldRotateup = false;
             transform.position = defaultposition;
             transform.rotation = defaultrotation;
             Debug.Log("Object has rotated 180 degrees, stopping rotation.");
