@@ -7,10 +7,10 @@ InputManager:
   m_Axes:
   - serializedVersion: 3
     m_Name: Horizontal
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: left
-    positiveButton: right
+    descriptiveName: swiperight
+    descriptiveNegativeName: swipeleft
+    negativeButton: a
+    positiveButton: d
     altNegativeButton: a
     altPositiveButton: d
     gravity: 3
@@ -23,11 +23,11 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Vertical
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: down
-    positiveButton: up
-    altNegativeButton: s
+    descriptiveName: swipeup
+    descriptiveNegativeName: swipedown
+    negativeButton: s
+    positiveButton: w
+    altNegativeButton: 
     altPositiveButton: w
     gravity: 3
     dead: 0.001
@@ -293,3 +293,4 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
+  m_UsePhysicalKeys: 1

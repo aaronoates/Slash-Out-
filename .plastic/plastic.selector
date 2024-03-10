@@ -1,0 +1,4 @@
+repository "Slash-Out!!-game@group95010@cloud"
+  path "/"
+    br "/main"
+    co "/main"
