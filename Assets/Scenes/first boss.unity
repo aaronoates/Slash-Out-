@@ -132,6 +132,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4440574167348078404, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
+      propertyPath: pivotPoint
+      value: 
+      objectReference: {fileID: 914984189}
+    - target: {fileID: 4440574167348078404, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: centerObject
       value: 
       objectReference: {fileID: 914984189}
