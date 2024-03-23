@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System.Threading;
+using UnityEngine;
 
 public class enemyScript : MonoBehaviour
 {
@@ -30,7 +29,7 @@ public class enemyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = defaultposition; // moves the sword to the default position.
+       // transform.position = defaultposition; // moves the sword to the default position.
 
         
     }
@@ -39,12 +38,19 @@ public class enemyScript : MonoBehaviour
     void Update()
     {
         int waitTime = Random.Range(0, waitTimes.Length);
-        Thread.Sleep(waitTime);
         int color = Random.Range(0, colors.Length);
+        //Thread.Sleep(waitTimes[waitTime]);
+        StartCoroutine(PerformSwing(waitTimes[waitTime], colors[color]));
 
-        if (colors[color] == "red" && !shouldRotate) // ensures you can't spam an attack, you need to wait until the swing animation finishes for should rotate to be set to false.
+    }
+
+    IEnumerator PerformSwing (int waitTime, string color)
+    {
+        yield return new WaitForSeconds(waitTime / 1000f);
+        
+        if (color == "red" && !shouldRotate) // ensures you can't spam an attack, you need to wait until the swing animation finishes for should rotate to be set to false.
         {
-            Debug.Log("turn blade red");
+            //Debug.Log("turn blade red");
             shouldRotateright = false;
             shouldRotateup = false;
             shouldRotatedown = false;
@@ -70,9 +76,9 @@ public class enemyScript : MonoBehaviour
             SwipeLeft();
         }
 
-        if (colors[color] == "blue" && !shouldRotate)
+        if (color == "blue" && !shouldRotate)
         {
-            Debug.Log("turn blade blue");
+            //Debug.Log("turn blade blue");
             shouldRotateleft = false;
             shouldRotateup = false;
             shouldRotatedown = false;
@@ -80,7 +86,7 @@ public class enemyScript : MonoBehaviour
             shouldRotatedownRight = false;
             shouldRotateupLeft = false;
             shouldRotateupRight = false;
-            transform.Translate(0f, 0f, 60f); //sword needed to be moved so that the swing is in the desired range around the player.
+           // transform.Translate(0f, 0f, 60f); //sword needed to be moved so that the swing is in the desired range around the player.
             transform.Rotate(0, -90, 0); // same as above, but facing left
 
 
@@ -95,9 +101,9 @@ public class enemyScript : MonoBehaviour
             SwipeRight();
         }
 
-        if (colors[color] == "yellow" && !shouldRotate)
+        if (color == "yellow" && !shouldRotate)
         {
-            Debug.Log("turn blade blue");
+            //Debug.Log("turn blade yellow");
             shouldRotateright = false;
             shouldRotateleft = false;
             shouldRotatedown = false;
@@ -105,7 +111,7 @@ public class enemyScript : MonoBehaviour
             shouldRotatedownRight = false;
             shouldRotateupLeft = false;
             shouldRotateupRight = false;
-            transform.Translate(-30f, 0f, 40f); // adjusting sword position before swing
+           // transform.Translate(-30f, 0f, 40f); // adjusting sword position before swing
             transform.Rotate(0, 0, -90); //rotates the tip of the blade to be pointing downwards before an up-swing.
             shouldRotate = true;
             shouldRotateup = true;
@@ -116,8 +122,9 @@ public class enemyScript : MonoBehaviour
             SwipeUp();
         }
 
-        if (colors[color] == "green" && !shouldRotate)
+        if (color == "green" && !shouldRotate)
         {
+            //Debug.Log("turn blade green");
             shouldRotateright = false;
             shouldRotateleft = false;
             shouldRotateup = false;
@@ -126,7 +133,7 @@ public class enemyScript : MonoBehaviour
             shouldRotatedownRight = false;
             shouldRotateupLeft = false;
             shouldRotateupRight = false;
-            transform.Translate(30f, 60f, 50f); // adjusting sword position before swing
+           // transform.Translate(30f, 60f, 50f); // adjusting sword position before swing
             transform.Rotate(0, 0, 90); // rotates the tip of the blade to be facing upwards before a down-swing.
             shouldRotate = true;
             shouldRotatedown = true;
@@ -137,18 +144,18 @@ public class enemyScript : MonoBehaviour
             SwipeDown();
         }
 
-        if (Input.GetKeyDown("q") && !shouldRotate)
-        {
+        //if (Input.GetKeyDown("q") && !shouldRotate)
+        //{
 
-            transform.Rotate(0, 45, -90); // sets the tip of the blade to be pointing down and to the right before a swing.
-            shouldRotate = true;
-            shouldRotateupLeft = true;
-        }
+            //transform.Rotate(0, 45, -90); // sets the tip of the blade to be pointing down and to the right before a swing.
+            //shouldRotate = true;
+            //shouldRotateupLeft = true;
+        //}
 
-        if (shouldRotate && shouldRotateupLeft)
-        {
-            SwipeUpLeft();
-        }
+        //if (shouldRotate && shouldRotateupLeft)
+        //{
+            //SwipeUpLeft();
+        //}
 
 
 
@@ -159,19 +166,20 @@ public class enemyScript : MonoBehaviour
     {
 
         //Debug.Log("Center Object Position (SwipeRight): " + centerObject.position);
-
+        
         transform.RotateAround(centerObject.position, UnityEngine.Vector3.up, rotationSpeed * Time.deltaTime); //rotates the blade around the center point along the y-axis at the given rotation speed
         totalRotation += rotationSpeed * Time.deltaTime;
-        Debug.Log(totalRotation);
+        //Debug.Log(totalRotation);
 
         if (totalRotation >= 180f) //sword has swung in a 180 degree arc
         {
             shouldRotate = false; // sword can be swung again
             shouldRotateleft = false;
-            transform.position = defaultposition; // returns the sword to the default position and rotation.
+           // transform.position = defaultposition; // returns the sword to the default position and rotation.
             transform.rotation = defaultrotation;
             //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
             totalRotation = 0f; // total rotation is reset for the next invocation.
+
 
         }
     }
@@ -179,14 +187,15 @@ public class enemyScript : MonoBehaviour
     void SwipeLeft()
     {
         //Debug.Log("Center Object Position (SwipeLeft): " + centerObject.position);
+        
         transform.RotateAround(centerObject.position, UnityEngine.Vector3.down, rotationSpeed * Time.deltaTime);
         totalRotation += rotationSpeed * Time.deltaTime;
-        Debug.Log(totalRotation);
+        //Debug.Log(totalRotation);
         if (totalRotation >= 180f)
         {
             shouldRotate = false;
             shouldRotateright = false;
-            transform.position = defaultposition;
+           // transform.position = defaultposition;
             transform.rotation = defaultrotation;
             //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
             totalRotation = 0f;
@@ -196,14 +205,15 @@ public class enemyScript : MonoBehaviour
 
     void SwipeUp()
     {
-        transform.RotateAround(centerObject.position, UnityEngine.Vector3.forward, rotationSpeed * Time.deltaTime);
+        
+        transform.RotateAround(centerObject.position, UnityEngine.Vector3.back, rotationSpeed * Time.deltaTime);
         totalRotation += rotationSpeed * Time.deltaTime;
-        Debug.Log(totalRotation);
+        //Debug.Log(totalRotation);
         if (totalRotation >= 180f)
         {
             shouldRotate = false;
             shouldRotateup = false;
-            transform.position = defaultposition;
+           // transform.position = defaultposition;
             transform.rotation = defaultrotation;
             //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
             totalRotation = 0f;
@@ -213,35 +223,38 @@ public class enemyScript : MonoBehaviour
 
     void SwipeDown()
     {
-        transform.RotateAround(centerObject.position, UnityEngine.Vector3.back, rotationSpeed * Time.deltaTime);
+        
+        transform.RotateAround(centerObject.position, UnityEngine.Vector3.forward, rotationSpeed * Time.deltaTime);
         totalRotation += rotationSpeed * Time.deltaTime;
-        Debug.Log(totalRotation);
+        //Debug.Log(totalRotation);
         if (totalRotation >= 180f)
         {
             shouldRotate = false;
             shouldRotatedown = false;
-            transform.position = defaultposition;
+           // transform.position = defaultposition;
             transform.rotation = defaultrotation;
-            Debug.Log("Object has rotated 180 degrees, stopping rotation.");
+            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
             totalRotation = 0f;
 
         }
     }
 
-    void SwipeUpLeft()
-    {
-        transform.RotateAround(centerObject.position, UnityEngine.Vector3.forward, rotationSpeed * Time.deltaTime);
-        transform.RotateAround(centerObject.position, UnityEngine.Vector3.down, rotationSpeed * Time.deltaTime);
-        totalRotation += rotationSpeed * Time.deltaTime;
-        if (totalRotation >= 180f)
-        {
-            shouldRotate = false;
-            shouldRotateup = false;
-            transform.position = defaultposition;
-            transform.rotation = defaultrotation;
-            Debug.Log("Object has rotated 180 degrees, stopping rotation.");
-            totalRotation = 0f;
+   // void SwipeUpLeft()
+   // {
+        
+       // transform.RotateAround(centerObject.position, UnityEngine.Vector3.forward, rotationSpeed * Time.deltaTime);
+     //   transform.RotateAround(centerObject.position, UnityEngine.Vector3.down, rotationSpeed * Time.deltaTime);
+        //totalRotation += rotationSpeed * Time.deltaTime;
+        //if (totalRotation >= 180f)
+        //{
+          //  shouldRotate = false;
+            //shouldRotateup = false;
+            //transform.position = defaultposition;
+            //transform.rotation = defaultrotation;
+            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
+            //totalRotation = 0f;
 
-        }
-    }
+        //}
+   // }
 }
+
