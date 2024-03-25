@@ -1,260 +1,203 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 
 public class enemyScript : MonoBehaviour
 {
-    private float totalRotation = 0f;
-    private bool shouldRotate = false;
-    private bool shouldRotateleft = false;
-    private bool shouldRotateright = false;
-    private bool shouldRotateup = false;
-    private bool shouldRotatedown = false;
-    private bool shouldRotateupRight = false;
-    private bool shouldRotateupLeft = false;
-    private bool shouldRotatedownLeft = false;
-    private bool shouldRotatedownRight = false;
-    private int[] waitTimes = new int[] { 1000, 3000, 5000, 7000 };
-    private string[] colors = new string[] { "red", "blue", "yellow", "green" };
+    private bool isSwinging = false; // true if the sword is mid-swing.
     
+    private float totalRotation = 0f; // keeps track of how far the sword has rotated (in degrees) throughout the current swing.
+    private int[] waitTimes = new int[] { 1000, 3000, 5000, 7000 };
+    private string[] directions = new string[] { "up", "down", "left", "right", "upleft", "upright", "downleft", "downright" }; // the different directions the sword can swing in.
+    private UnityEngine.Vector3[] offsets = new UnityEngine.Vector3[8]; // offsets for each swing. These are implemented for reusability. If the code is imported into another scene, the offsets can be adjusted to move the sword to the desired position before the swing.
+    private UnityEngine.Vector3[] axes = new UnityEngine.Vector3[8]; // rotation axes for each swing direction
+    public Transform centerObject; // the object around which the sword rotates.
+    public float rotationSpeed; // the speed at which the blade rotates.
+    public UnityEngine.Vector3 swingstartposition; // the position from which the swing starts.
+    public UnityEngine.Vector3 defaultoffset;
+    public UnityEngine.Vector3 upswingoffset;
+    public UnityEngine.Vector3 rightswingoffset;
+    public UnityEngine.Vector3 leftswingoffset;
+    public UnityEngine.Vector3 downswingoffset;
+    public UnityEngine.Vector3 upleftoffset;
+    public UnityEngine.Vector3 uprightoffset;
+    public UnityEngine.Vector3 downrightoffset;
+    public UnityEngine.Vector3 downleftoffset; // the offsets to be put into the offsets array.
+    public UnityEngine.Vector3 trueDefault; // the default position + the default offset (if necessary when imported to a different scene).
+    public UnityEngine.Vector3 upleftaxis; 
+    public UnityEngine.Vector3 uprightaxis;
+    public UnityEngine.Vector3 downleftaxis;
+    public UnityEngine.Vector3 downrightaxis; // the axes to be added to the axes array.
+    private Vector3 defaultPosition; // the default position of the sword
+    private Quaternion defaultRotation; // the default rotation of the sword.
 
-
-    public Transform centerObject; // the object that the sword will rotate around, in this case the player character.
-
-    public float rotationSpeed; // how fast the swing is.
-    public UnityEngine.Vector3 defaultposition = new UnityEngine.Vector3(128f, 12.7f, -0.5f); // the default position of the sword object.
-    public UnityEngine.Quaternion defaultrotation = UnityEngine.Quaternion.Euler(0f, -190.65f, 0f); // the default rotation of the sword object.
-
-
-    // Start is called before the first frame update
     void Start()
     {
-       // transform.position = defaultposition; // moves the sword to the default position.
-
-        
+        defaultPosition = transform.position;
+        defaultRotation = transform.rotation;
+        offsets[0] = upswingoffset;
+        offsets[1] = downswingoffset;
+        offsets[2] = leftswingoffset;
+        offsets[3] = rightswingoffset;
+        offsets[4] = upleftoffset;
+        offsets[5] = uprightoffset;
+        offsets[6] = downleftoffset;
+        offsets[7] = downrightoffset;
+        axes[0] = UnityEngine.Vector3.forward;
+        axes[1] = UnityEngine.Vector3.back;
+        axes[2] = UnityEngine.Vector3.down;
+        axes[3] = UnityEngine.Vector3.up;
+        axes[4] = upleftaxis;
+        axes[5] = uprightaxis;
+        axes[6] = downleftaxis;
+        axes[7] = downrightaxis; //adds the elements to each respective array
+        StartCoroutine(PerformRandomSwings()); // coroutines allow different programs to be running at the same time.
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator PerformRandomSwings() // an interface that is used to iterate over collections of objects or elements, in this case wait times, directions.
     {
-        int waitTime = Random.Range(0, waitTimes.Length);
-        int color = Random.Range(0, colors.Length);
-        //Thread.Sleep(waitTimes[waitTime]);
-        StartCoroutine(PerformSwing(waitTimes[waitTime], colors[color]));
+        while (true)
+        {
+            int waitTimeIndex = Random.Range(0, waitTimes.Length); // the index of randomly selected wait time before the next attack
+            int directionIndex = Random.Range(0, directions.Length); // the index of randomly selected direction of the next attack.
 
+            yield return new WaitForSeconds(waitTimes[waitTimeIndex] / 1000f); // gets wait time and converts the wait time to seconds.
+
+            string direction = directions[directionIndex]; // the randomly selected swing direction.
+            PerformSwing(direction);
+        }
     }
 
-    IEnumerator PerformSwing (int waitTime, string color)
+    void PerformSwing(string direction)
     {
-        yield return new WaitForSeconds(waitTime / 1000f);
-        
-        if (color == "red" && !shouldRotate) // ensures you can't spam an attack, you need to wait until the swing animation finishes for should rotate to be set to false.
+        if (!isSwinging) // ensures that a new swing cannot begin until the current swing is complete.
         {
-            //Debug.Log("turn blade red");
-            shouldRotateright = false;
-            shouldRotateup = false;
-            shouldRotatedown = false;
-            shouldRotatedownLeft = false;
-            shouldRotatedownRight = false;
-            shouldRotateupLeft = false;
-            shouldRotateupRight = false;
-
-            transform.Rotate(0, 90, 0); //rotates the tip of the blade to be facing to the right-hand side of the character before the swing.
-
-
-            shouldRotate = true;
-            shouldRotateleft = true;
-
-
-
-
-
+            isSwinging = true;
+            
+            StartCoroutine(AnimateSwing(direction));
         }
-
-        if (shouldRotate && shouldRotateleft)
-        {
-            SwipeLeft();
-        }
-
-        if (color == "blue" && !shouldRotate)
-        {
-            //Debug.Log("turn blade blue");
-            shouldRotateleft = false;
-            shouldRotateup = false;
-            shouldRotatedown = false;
-            shouldRotatedownLeft = false;
-            shouldRotatedownRight = false;
-            shouldRotateupLeft = false;
-            shouldRotateupRight = false;
-           // transform.Translate(0f, 0f, 60f); //sword needed to be moved so that the swing is in the desired range around the player.
-            transform.Rotate(0, -90, 0); // same as above, but facing left
-
-
-            shouldRotate = true;
-            shouldRotateright = true;
-
-
-        }
-
-        if (shouldRotate && shouldRotateright)
-        {
-            SwipeRight();
-        }
-
-        if (color == "yellow" && !shouldRotate)
-        {
-            //Debug.Log("turn blade yellow");
-            shouldRotateright = false;
-            shouldRotateleft = false;
-            shouldRotatedown = false;
-            shouldRotatedownLeft = false;
-            shouldRotatedownRight = false;
-            shouldRotateupLeft = false;
-            shouldRotateupRight = false;
-           // transform.Translate(-30f, 0f, 40f); // adjusting sword position before swing
-            transform.Rotate(0, 0, -90); //rotates the tip of the blade to be pointing downwards before an up-swing.
-            shouldRotate = true;
-            shouldRotateup = true;
-        }
-
-        if (shouldRotate && shouldRotateup)
-        {
-            SwipeUp();
-        }
-
-        if (color == "green" && !shouldRotate)
-        {
-            //Debug.Log("turn blade green");
-            shouldRotateright = false;
-            shouldRotateleft = false;
-            shouldRotateup = false;
-            //shouldRotatedown = false;
-            shouldRotatedownLeft = false;
-            shouldRotatedownRight = false;
-            shouldRotateupLeft = false;
-            shouldRotateupRight = false;
-           // transform.Translate(30f, 60f, 50f); // adjusting sword position before swing
-            transform.Rotate(0, 0, 90); // rotates the tip of the blade to be facing upwards before a down-swing.
-            shouldRotate = true;
-            shouldRotatedown = true;
-        }
-
-        if (shouldRotate && shouldRotatedown)
-        {
-            SwipeDown();
-        }
-
-        //if (Input.GetKeyDown("q") && !shouldRotate)
-        //{
-
-            //transform.Rotate(0, 45, -90); // sets the tip of the blade to be pointing down and to the right before a swing.
-            //shouldRotate = true;
-            //shouldRotateupLeft = true;
-        //}
-
-        //if (shouldRotate && shouldRotateupLeft)
-        //{
-            //SwipeUpLeft();
-        //}
-
-
-
-
     }
 
-    void SwipeRight()
+    IEnumerator AnimateSwing(string direction)
     {
+        Vector3 swingOffset = GetSwingOffset(direction);
+        Vector3 rotationAxis = GetRotationAxis(direction);
+        Vector3 startPosition = transform.position; // sets the current position to be the start position of the swing.
+        Quaternion startRotation = transform.rotation; // sets the current rotation to be the start rotation of the swing.
+        float targetRotation = 180f; // 180 degrees of rotation.
 
-        //Debug.Log("Center Object Position (SwipeRight): " + centerObject.position);
-        
-        transform.RotateAround(centerObject.position, UnityEngine.Vector3.up, rotationSpeed * Time.deltaTime); //rotates the blade around the center point along the y-axis at the given rotation speed
-        totalRotation += rotationSpeed * Time.deltaTime;
-        //Debug.Log(totalRotation);
-
-        if (totalRotation >= 180f) //sword has swung in a 180 degree arc
+        while (totalRotation < targetRotation)
         {
-            shouldRotate = false; // sword can be swung again
-            shouldRotateleft = false;
-           // transform.position = defaultposition; // returns the sword to the default position and rotation.
-            transform.rotation = defaultrotation;
-            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
-            totalRotation = 0f; // total rotation is reset for the next invocation.
-
-
+            float angle = rotationSpeed * Time.deltaTime;
+            transform.RotateAround(centerObject.position, rotationAxis, angle); // rotates the sword around the center object along the axis of rotation at the given rotation speed.
+            totalRotation += Mathf.Abs(angle); // increments the total rotation frame-by-frame.
+            yield return null;
         }
+
+        transform.position = startPosition + swingOffset; // sets the start position of the sword according to the given offset.
+        transform.rotation = startRotation; 
+
+        totalRotation = 0f; // resets the rotation value to be 0 for the next rotation.
+        isSwinging = false; //swing has completed.
     }
 
-    void SwipeLeft()
-    {
-        //Debug.Log("Center Object Position (SwipeLeft): " + centerObject.position);
-        
-        transform.RotateAround(centerObject.position, UnityEngine.Vector3.down, rotationSpeed * Time.deltaTime);
-        totalRotation += rotationSpeed * Time.deltaTime;
-        //Debug.Log(totalRotation);
-        if (totalRotation >= 180f)
-        {
-            shouldRotate = false;
-            shouldRotateright = false;
-           // transform.position = defaultposition;
-            transform.rotation = defaultrotation;
-            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
-            totalRotation = 0f;
-
-        }
-    }
-
-    void SwipeUp()
+    Vector3 GetSwingOffset(string direction) // chooses the offset based on the input direction.
     {
         
-        transform.RotateAround(centerObject.position, UnityEngine.Vector3.back, rotationSpeed * Time.deltaTime);
-        totalRotation += rotationSpeed * Time.deltaTime;
-        //Debug.Log(totalRotation);
-        if (totalRotation >= 180f)
+        if (direction == "up")
         {
-            shouldRotate = false;
-            shouldRotateup = false;
-           // transform.position = defaultposition;
-            transform.rotation = defaultrotation;
-            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
-            totalRotation = 0f;
-
+            return offsets[0];
+        } else if (direction == "down")
+        {
+            return offsets[1];
+        } else if (direction == "left")
+        {
+            return offsets[2];
+        } else if (direction == "right")
+        {
+            return offsets[3];
+        } else if (direction == "upleft")
+        {
+            return offsets[4];
+        } else if (direction == "upright")
+        {
+            return offsets[5];
+        } else if (direction == "downleft")
+        {
+            return offsets[6];
+        } else
+        {
+            return offsets[7];
         }
+        
     }
 
-    void SwipeDown()
+    Vector3 GetRotationAxis(string direction)
     {
-        
-        transform.RotateAround(centerObject.position, UnityEngine.Vector3.forward, rotationSpeed * Time.deltaTime);
-        totalRotation += rotationSpeed * Time.deltaTime;
-        //Debug.Log(totalRotation);
-        if (totalRotation >= 180f)
+        //chooses the rotation axis based on the input direction.
+        if (direction == "up")
         {
-            shouldRotate = false;
-            shouldRotatedown = false;
-           // transform.position = defaultposition;
-            transform.rotation = defaultrotation;
-            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
-            totalRotation = 0f;
+            return axes[0];
+        }
+        else if (direction == "down")
+        {
+            return axes[1];
+        }
+        else if (direction == "left")
+        {
+            return axes[2];
+        }
+        else if (direction == "right")
+        {
+            return axes[3];
+        }
+        else if (direction == "upleft")
+        {
+            return axes[4];
+        }
+        else if (direction == "upright")
+        {
+            return axes[5];
+        }
+        else if (direction == "downleft")
+        {
+            return axes[6];
+        }
+        else
+        {
+            return axes[7];
+        }
+        
+    }
 
+    Vector3 GetInitialRotation(string direction) // sets the initial rotation to be whatever it needs to be before swinging. For example, before swinging up, the sword would need to be pointing down.
+    {
+        switch (direction)
+        {
+            case "up":
+                return new Vector3(0f, 0f, -90f);
+            case "down":
+                return new Vector3(0f, 0f, 90f);
+            case "left":
+                return new Vector3(0f, 90f, 0f);
+            case "right":
+                return new Vector3(0f, -90f, 0f);
+            case "upleft":
+                return new Vector3(0f, 45f, -90f);
+            case "upright":
+                return new Vector3(0f, -45f, -90f);
+            case "downleft":
+                return new Vector3(0f, 45f, 90f);
+            case "downright":
+                return new Vector3(0f, -45f, 90f);
+            default:
+                return Vector3.zero;
         }
     }
 
-   // void SwipeUpLeft()
-   // {
-        
-       // transform.RotateAround(centerObject.position, UnityEngine.Vector3.forward, rotationSpeed * Time.deltaTime);
-     //   transform.RotateAround(centerObject.position, UnityEngine.Vector3.down, rotationSpeed * Time.deltaTime);
-        //totalRotation += rotationSpeed * Time.deltaTime;
-        //if (totalRotation >= 180f)
-        //{
-          //  shouldRotate = false;
-            //shouldRotateup = false;
-            //transform.position = defaultposition;
-            //transform.rotation = defaultrotation;
-            //Debug.Log("Object has rotated 180 degrees, stopping rotation.");
-            //totalRotation = 0f;
 
-        //}
-   // }
 }
+
+
+
+
 

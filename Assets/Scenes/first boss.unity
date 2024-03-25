@@ -337,7 +337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.822876
+      value: -36.5
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -345,7 +345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.197704
+      value: -6.2
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -498,6 +498,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &405359744 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 688423672078110118, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
+  m_PrefabInstance: {fileID: 1320967616}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &578730584
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,19 +1213,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.12289429
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -91.642944
+      value: -76
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -43.402283
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.23230058
+      value: -0.15658984
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1228,7 +1233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9726441
+      value: 0.98766375
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1240,7 +1245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 206.865
+      value: 198.018
       objectReference: {fileID: 0}
     - target: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1254,13 +1259,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: sword 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8314155617275956789, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
+      propertyPath: m_Name
+      value: enemyhilt
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7030944167733143525, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
     - {fileID: 4409438915451132538, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
     - {fileID: 3139422269154483340, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7906891287472114904, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1639828258}
   m_SourcePrefab: {fileID: 100100000, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
 --- !u!4 &1457024978 stripped
 Transform:
@@ -1407,6 +1419,40 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7417775032733554274, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
   m_PrefabInstance: {fileID: 1320967616}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1639828257 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7906891287472114904, guid: cf4c3cfe69bce1142a8b3f759b21a00f, type: 3}
+  m_PrefabInstance: {fileID: 1320967616}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1639828258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639828257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45bfcb5a599f63a4a9f921ea792020e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  centerObject: {fileID: 405359744}
+  rotationSpeed: 300
+  swingstartposition: {x: -19, y: -76, z: 13}
+  defaultoffset: {x: 0, y: 0, z: 0}
+  upswingoffset: {x: 0, y: 0, z: 0}
+  rightswingoffset: {x: 0, y: 0, z: 0}
+  leftswingoffset: {x: 0, y: 0, z: 0}
+  downswingoffset: {x: 0, y: 0, z: 0}
+  upleftoffset: {x: 0, y: 0, z: 0}
+  uprightoffset: {x: 0, y: 0, z: 0}
+  downrightoffset: {x: 0, y: 0, z: 0}
+  downleftoffset: {x: 0, y: 0, z: 0}
+  trueDefault: {x: 0, y: 0, z: 0}
+  upleftaxis: {x: 0, y: -1, z: 1}
+  uprightaxis: {x: 0, y: 1, z: 1}
+  downleftaxis: {x: 0, y: -1, z: -1}
+  downrightaxis: {x: 0, y: 1, z: -1}
 --- !u!1 &1665100933
 GameObject:
   m_ObjectHideFlags: 0
@@ -1527,7 +1573,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   centerObject: {fileID: 851677747}
+  swingstartposition: {x: 18.2, y: -66.74, z: 9.9}
+  upswingoffset: {x: 120, y: 60, z: 0}
+  rightswingoffset: {x: 140, y: 80, z: 40}
+  leftswingoffset: {x: 140, y: 60, z: -20}
+  downswingoffset: {x: 150, y: 160, z: 0}
+  upleftoffset: {x: 100, y: 80, z: -25}
+  uprightoffset: {x: 180, y: 20, z: -25}
+  downrightoffset: {x: 130, y: 130, z: 0}
+  downleftoffset: {x: 130, y: 120, z: 0}
   rotationSpeed: 300
+  defaultposition: {x: -31.5, y: -66.74, z: -9.4}
   defaultrotation: {x: 0, y: 0.106706604, z: 0, w: 0.99429053}
 --- !u!1 &1692546517
 GameObject:
