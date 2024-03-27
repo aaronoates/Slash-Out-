@@ -44,7 +44,7 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Debug.Log("Z key pressed");
-            if (isGamePaused) 
+            if (isGamePaused)
             {
                 Resume();
             }
@@ -53,7 +53,7 @@ public class PauseMenu : MonoBehaviour
             {
                 Pause();
             }
-            
+
         }
     }
 

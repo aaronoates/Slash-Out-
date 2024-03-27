@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Victory : MonoBehaviour
 {
+    //This script will trigger the win screen when enemy health is depleted.
+
+    //Required variables
     public HealthBar healthbar;
     public Hitbox hit;
     public GameObject Victoryobject;
@@ -15,8 +18,8 @@ public class Victory : MonoBehaviour
 
     public void Update()
     {
-
-        if (hit.game == true)
+        //healthbar.game accesses the healthbar script and returns true if enemy health is depleted.
+        if (healthbar.game == true)
         {
             Victoryover();
         }
@@ -24,6 +27,7 @@ public class Victory : MonoBehaviour
 
     public void Victoryover()
     {
+        //Sets victory screen and turns off unecessary UI
         Victoryobject.SetActive(true);
         Time.timeScale = 0;
         IsGameOver = true;
@@ -34,6 +38,7 @@ public class Victory : MonoBehaviour
 
     public void NextFight()
     {
+        //Transitions to next fight if button is clicked on victory screen
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
         IsGameOver = false;
@@ -44,6 +49,7 @@ public class Victory : MonoBehaviour
 
     public void Menu()
     {
+        //Transitions to main menu if button is clicked on victory screen
         SceneManager.LoadScene(0);
         Time.timeScale = 1f;
         IsGameOver = false;

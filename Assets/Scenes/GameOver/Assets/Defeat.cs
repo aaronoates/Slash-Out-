@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Defeat : MonoBehaviour
 {
+    //This script will trigger the loss screen when player health is depleted.
+
+    //Required variables 
     public HealthBar healthbar;
     public Hitbox hit;
     public GameObject GameOverobject;
@@ -15,8 +18,8 @@ public class Defeat : MonoBehaviour
 
     public void Update()
     {
-        
-        if (hit.game == true)
+        //healthbar.game accesses the healthbar script and returns true if player health is depleted.
+        if (healthbar.game == true)
         {
             GameOver();
         }
@@ -24,6 +27,7 @@ public class Defeat : MonoBehaviour
 
     public void GameOver()
     {
+        //Sets defeat screen and turns off unecessary UI
         GameOverobject.SetActive(true);
         Time.timeScale = 0;
         IsGameOver = true;
@@ -34,6 +38,7 @@ public class Defeat : MonoBehaviour
 
     public void Restart()
     {
+        //Restarts the scene if button is clicked on defeat screen
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
         IsGameOver = false;
@@ -44,6 +49,7 @@ public class Defeat : MonoBehaviour
 
     public void Menu()
     {
+        //Transitions to main menu if button is clicked on defeat screen
         SceneManager.LoadScene(0);
         Time.timeScale = 1f;
         IsGameOver = false;

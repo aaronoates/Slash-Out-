@@ -4,7 +4,7 @@ using UnityEngine;
 public class enemyScript : MonoBehaviour
 {
     private bool isSwinging = false; // true if the sword is mid-swing.
-    
+
     private float totalRotation = 0f; // keeps track of how far the sword has rotated (in degrees) throughout the current swing.
     private int[] waitTimes = new int[] { 1000, 3000, 5000, 7000 };
     private string[] directions = new string[] { "up", "down", "left", "right", "upleft", "upright", "downleft", "downright" }; // the different directions the sword can swing in.
@@ -23,7 +23,7 @@ public class enemyScript : MonoBehaviour
     public UnityEngine.Vector3 downrightoffset;
     public UnityEngine.Vector3 downleftoffset; // the offsets to be put into the offsets array.
     public UnityEngine.Vector3 trueDefault; // the default position + the default offset (if necessary when imported to a different scene).
-    public UnityEngine.Vector3 upleftaxis; 
+    public UnityEngine.Vector3 upleftaxis;
     public UnityEngine.Vector3 uprightaxis;
     public UnityEngine.Vector3 downleftaxis;
     public UnityEngine.Vector3 downrightaxis; // the axes to be added to the axes array.
@@ -72,7 +72,7 @@ public class enemyScript : MonoBehaviour
         if (!isSwinging) // ensures that a new swing cannot begin until the current swing is complete.
         {
             isSwinging = true;
-            
+
             StartCoroutine(AnimateSwing(direction));
         }
     }
@@ -94,7 +94,7 @@ public class enemyScript : MonoBehaviour
         }
 
         transform.position = startPosition + swingOffset; // sets the start position of the sword according to the given offset.
-        transform.rotation = startRotation; 
+        transform.rotation = startRotation;
 
         totalRotation = 0f; // resets the rotation value to be 0 for the next rotation.
         isSwinging = false; //swing has completed.
@@ -102,33 +102,40 @@ public class enemyScript : MonoBehaviour
 
     Vector3 GetSwingOffset(string direction) // chooses the offset based on the input direction.
     {
-        
+
         if (direction == "up")
         {
             return offsets[0];
-        } else if (direction == "down")
+        }
+        else if (direction == "down")
         {
             return offsets[1];
-        } else if (direction == "left")
+        }
+        else if (direction == "left")
         {
             return offsets[2];
-        } else if (direction == "right")
+        }
+        else if (direction == "right")
         {
             return offsets[3];
-        } else if (direction == "upleft")
+        }
+        else if (direction == "upleft")
         {
             return offsets[4];
-        } else if (direction == "upright")
+        }
+        else if (direction == "upright")
         {
             return offsets[5];
-        } else if (direction == "downleft")
+        }
+        else if (direction == "downleft")
         {
             return offsets[6];
-        } else
+        }
+        else
         {
             return offsets[7];
         }
-        
+
     }
 
     Vector3 GetRotationAxis(string direction)
@@ -166,7 +173,7 @@ public class enemyScript : MonoBehaviour
         {
             return axes[7];
         }
-        
+
     }
 
     Vector3 GetInitialRotation(string direction) // sets the initial rotation to be whatever it needs to be before swinging. For example, before swinging up, the sword would need to be pointing down.
@@ -196,7 +203,6 @@ public class enemyScript : MonoBehaviour
 
 
 }
-
 
 
 
